@@ -43,9 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="Fact.cs" />
+    <Compile Include="KnowledgeBase.cs" />
     <Compile Include="MapSquare.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rule.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
