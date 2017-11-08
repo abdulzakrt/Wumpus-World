@@ -13,12 +13,44 @@ namespace Wumpus_World
         Direction direction = Direction.West;
         int CurrentX = 0;
         int CurrentY = 0;
-        public int Score { get => score; set => score = value; }
-        public Direction Direction { get => direction; set => direction = value; }
-        public int CurrentX1 { get => CurrentX; set => CurrentX = value; }
-        public int CurrentY1 { get => CurrentY; set => CurrentY = value; }
 
-        
+        public int Score
+        {
+            get
+            {
+                return score;
+            }
 
+            set
+            {
+                score = value;
+            }
+        }
+
+        public int CurrentX1
+        {
+            get
+            {
+                return CurrentX;
+            }
+
+            set
+            {
+                CurrentX = value;
+            }
+        }
+
+        public int CurrentY1
+        {
+            get
+            {
+                return CurrentY;
+            }
+
+            set
+            {
+                CurrentY = value;
+            }
+        }
     }
 }

@@ -13,19 +13,117 @@ namespace Wumpus_World
         //facts
         private bool visited, safe, pit, wumpus;
         Agent CurrentAgent = null;
+
+        public bool Stench
+        {
+            get
+            {
+                return stench;
+            }
+
+            set
+            {
+                stench = value;
+            }
+        }
+
+        public bool Breeze
+        {
+            get
+            {
+                return breeze;
+            }
+
+            set
+            {
+                breeze = value;
+            }
+        }
+
+        public bool Glitter
+        {
+            get
+            {
+                return glitter;
+            }
+
+            set
+            {
+                glitter = value;
+            }
+        }
+
+        public bool Scream
+        {
+            get
+            {
+                return scream;
+            }
+
+            set
+            {
+                scream = value;
+            }
+        }
+
+        public bool Visited
+        {
+            get
+            {
+                return visited;
+            }
+
+            set
+            {
+                visited = value;
+            }
+        }
+
+        public bool Safe
+        {
+            get
+            {
+                return safe;
+            }
+
+            set
+            {
+                safe = value;
+            }
+        }
+
+        public bool Pit
+        {
+            get
+            {
+                return pit;
+            }
+
+            set
+            {
+                pit = value;
+            }
+        }
+
+        public bool Wumpus
+        {
+            get
+            {
+                return wumpus;
+            }
+
+            set
+            {
+                wumpus = value;
+            }
+        }
+
         public MapSquare()
         {
             stench = breeze = glitter = scream = visited = safe = pit = wumpus = false;
         }
 
-        public bool Stench { get => stench; set => stench = value; }
-        public bool Breeze { get => breeze; set => breeze = value; }
-        public bool Glitter { get => glitter; set => glitter = value; }
-        public bool Scream { get => scream; set => scream = value; }
-        public bool Visited { get => visited; set => visited = value; }
-        public bool Safe { get => safe; set => safe = value; }
-        public bool Pit { get => pit; set => pit = value; }
-        public bool Wumpus { get => wumpus; set => wumpus = value; }
+       
 
         public String ReturnSquare()
         {
