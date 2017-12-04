@@ -12,35 +12,21 @@ namespace Wumpus_World
     {
         static void Main(string[] args)
         {
-			//Console.Write("Wumpus World\n");
-			//World w = new World();
-
-			//w.InitializeWorld();
-			//w.PrintMap();
-			//w.MoveAgent();
-			//w.PrintMap();
-			
-			if (!PlEngine.IsInitialized)
+			Console.Write("Wumpus World\n");
+			World w = new World();
+			w.InitializeWorld();
+			Agent a = new Agent(w);
+			int x;
+			while (true)
 			{
-				String[] param = { "-q" };  // suppressing informational and banner messages
-				PlEngine.Initialize(param);
-				PlQuery.PlCall("assert(father(martin, inka))");
-				PlQuery.PlCall("assert(father(uwe, gloria))");
-				PlQuery.PlCall("assert(father(uwe, melanie))");
-				PlQuery.PlCall("assert(father(uwe, ayala))");
-				using (var q = new PlQuery("father(P, C), atomic_list_concat([P,' is_father_of ',C], L)"))
-				{
-					foreach (PlQueryVariables v in q.SolutionVariables)
-						Console.WriteLine(v["L"].ToString());
-
-					Console.WriteLine("all children from uwe:");
-					q.Variables["P"].Unify("uwe");
-					foreach (PlQueryVariables v in q.SolutionVariables)
-						Console.WriteLine(v["C"].ToString());
-				}
-				PlEngine.PlCleanup();
-				Console.WriteLine("finshed!");
+				w.PrintMap();
+				a.Step();
+				
+				Console.ReadLine();
 			}
+			
+			//stop prolog session
+			PlEngine.PlCleanup();
 		}
     }
 }

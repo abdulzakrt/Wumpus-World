@@ -11,10 +11,11 @@ namespace Wumpus_World
     {
 
         public MapSquare[,] map ;
-        private Agent agent;
+		private int size;
         Random r = new Random();
         public World() {
             map = new MapSquare[4, 4];
+			size = 4;
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
@@ -26,9 +27,9 @@ namespace Wumpus_World
             
         }
 
+		public int Size { get => size; set => size = value; }
 
-
-        public void InitializeWorld()
+		public void InitializeWorld()
         {
             //Random Number Generator
             
@@ -94,14 +95,15 @@ namespace Wumpus_World
                 y = r.Next(0, 4);
             }
             map[x, y].Glitter = true;
-            agent = new Agent();
-            map[0, 0].PutAgent(agent);
+           
+            
 
         }
 
         public void PrintMap() {
-            Console.Clear();
-            Console.WriteLine("   0         1         2         3");
+			Console.WriteLine();
+			Console.WriteLine("______________________________________________");
+			Console.WriteLine("   0         1         2         3");
             for (int i = 0; i < 4; i++) {
                 Console.Write(i+"  ");
                 for (int j = 0; j < 4; j++)
@@ -114,96 +116,6 @@ namespace Wumpus_World
             Console.WriteLine("(W = Wumpus, St=Stench, Br=Breeze, Gl=Glitter, Sc=Scream, V=Visited, Sa=Safe, P=Pit, A=Agent)");
         }
 
-        private bool MoveAgentNorth() {
-            if (agent.CurrentY1 - 1 >= 0)
-            {
-                
-                map[agent.CurrentX1, agent.CurrentY1].RemoveAgent();
-                agent.CurrentY1--;
-                map[agent.CurrentX1, agent.CurrentY1].PutAgent(agent);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        private bool MoveAgentSouth()
-        {
-            if (agent.CurrentY1 + 1 <= 3)
-            {
-
-                map[agent.CurrentX1, agent.CurrentY1].RemoveAgent();
-                agent.CurrentY1++;
-                map[agent.CurrentX1, agent.CurrentY1].PutAgent(agent);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        private bool MoveAgentEast()
-        {
-            if (agent.CurrentX1 + 1 <= 3)
-            {
-
-                map[agent.CurrentX1, agent.CurrentY1].RemoveAgent();
-                agent.CurrentX1++;
-                map[agent.CurrentX1, agent.CurrentY1].PutAgent(agent);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        private bool MoveAgentWest()
-        {
-            if (agent.CurrentX1 - 1 >= 0)
-            {
-
-                map[agent.CurrentX1, agent.CurrentY1].RemoveAgent();
-                agent.CurrentX1--;
-                map[agent.CurrentX1, agent.CurrentY1].PutAgent(agent);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void MoveAgent() {
-            
-            int rand;
-            for(int i = 0; i < 50; i++) {
-                rand =  r.Next(0,4);
-                switch (rand)
-                {
-                    case 0:
-                    {       MoveAgentEast();
-                            break;
-                    }
-                    case 1:
-                    {
-                            MoveAgentWest();
-                            break;
-                    }
-                    case 2:
-                    {
-                            MoveAgentNorth();
-                            break;
-                    }
-                    case 3:
-                        {
-                            MoveAgentSouth();
-                            break;
-                        }
-                }
-                Console.ReadLine();
-                PrintMap();
-            }
-        }
+        
     }
 }
