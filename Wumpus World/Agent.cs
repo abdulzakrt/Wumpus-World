@@ -64,7 +64,10 @@ namespace Wumpus_World
                 CurrentY = value;
             }
         }
-
+		private static double GetpointDistance(double x1, double y1, double x2, double y2)
+		{
+			return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
+		}
 		private void MovetoLocation(int x, int y)
 		{
 			//while (CurrentX != x || CurrentY != y)
@@ -121,17 +124,25 @@ namespace Wumpus_World
 				{
 					if (visited.Contains(p))
 					{
-						//visitedneighbours.Add(p);
-						MovetoLocation(p.X, p.Y);
-						break;
-						
+						visitedneighbours.Add(p);	
 					}
 				}
 				//pick the nearest node to move back to the first one
-				//int goalpoint
-				//int minpathdistance = Point.Subtract(, p1).Length;
-				//Point nearestpoint = visitedneighbours.Min();
-				//Console.WriteLine(nearestpoint);
+				Point goalpoint = new Point(CurrentX, CurrentY);
+				Point nextpoint = new Point(0,0) ;
+				double minpathdistance = 10000;
+				foreach(Point v in visitedneighbours)
+				{
+					if (minpathdistance > GetpointDistance(v.X,goalpoint.X,v.Y,goalpoint.Y))
+					{
+						minpathdistance = GetpointDistance(v.X, goalpoint.X, v.Y, goalpoint.Y);
+						nextpoint = v;
+					}
+				}
+
+				Console.WriteLine("next point is " + nextpoint);
+				MovetoLocation(nextpoint.X, nextpoint.Y);
+				
 			}
 
 			Point visitedp = new Point(CurrentX, CurrentY);
@@ -216,7 +227,7 @@ namespace Wumpus_World
 				List<Point> neighbours = Getpointneighbours(p);	
 				foreach (Point n in neighbours)
 				{
-					Console.WriteLine("point ( "+n.X+","+n.Y+") is "+kb.ispit(n.X, n.Y));
+					//Console.WriteLine("point ( "+n.X+","+n.Y+") is "+kb.ispit(n.X, n.Y));
 					if (!kb.ispit(n.X, n.Y))
 					{
 						safe.Add(n);
