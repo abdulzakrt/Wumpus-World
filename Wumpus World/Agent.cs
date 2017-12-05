@@ -21,6 +21,7 @@ namespace Wumpus_World
 		private Point startpoint = new Point(0, 0);
 		public Agent (World w)
 		{
+			
 			world = w;
 			map = w.map;
 			map[0, 0].PutAgent(this);
@@ -146,7 +147,7 @@ namespace Wumpus_World
 					}
 				}
 
-				Console.WriteLine("next point is " + nextpoint);
+				//Console.WriteLine("next point is " + nextpoint);
 				//traversedPoints.Add(nextpoint);
 				MovetoLocation(nextpoint.X, nextpoint.Y);
 				MovetoLocation(x, y);
@@ -223,7 +224,8 @@ namespace Wumpus_World
 		{
 			//Telling knowledgebase agent's percept
 			bool b = map[CurrentX, CurrentY].Breeze;
-			kb.tell(b, false, false, CurrentX, CurrentY);
+			bool st = map[CurrentX, CurrentY].Stench;
+			kb.tell(b, st, false, CurrentX, CurrentY);
 
 			List<Point> safe = new List<Point>();
 			//Asking knowledgebase about safety of neighbouring cell's safety
@@ -233,27 +235,39 @@ namespace Wumpus_World
 				foreach (Point n in neighbours)
 				{
 					//Console.WriteLine("point ( "+n.X+","+n.Y+") is "+kb.ispit(n.X, n.Y));
-					if (!kb.ispit(n.X, n.Y))
+					if (!kb.ispit(n.X, n.Y) && !kb.iswumpus(n.X,n.Y))
 					{
+						if(!safe.Contains(n))
 						safe.Add(n);
 					}
 				}
 			}
-
+			Console.WriteLine("Safe Nodes: ");
+			foreach (Point l in safe)
+			{
+				Console.Write(l+ ", ");
+			}
+			Console.WriteLine();
 			//if there are safe nodes go to safe one
-			Console.WriteLine(safe.Count);
+			//Console.WriteLine(safe.Count);
+			bool newsafe = false;
 			if (safe.Count != 0)
 			{
 				foreach (Point s in safe) {
-					if(!visited.Contains(s)) { 
-						
-						Console.WriteLine("Moving to location" + s.X + s.Y);
+					if(!visited.Contains(s)) {
+
+						Console.WriteLine("Moving to location " + s);
 						startpoint = new Point(CurrentX, CurrentY);
 						MovetoLocation(s.X, s.Y);
+						newsafe = true;
 						break;
 					}
 				}
 				
+			}
+			if(!newsafe)
+			{
+				Console.WriteLine("No more safe nodes");
 			}
 			//else pick random node to move to
 			

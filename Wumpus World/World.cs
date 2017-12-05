@@ -42,7 +42,7 @@ namespace Wumpus_World
                 y = r.Next(1, 4);
             }
             map[x,y].Wumpus = true;
-            map[x, y].Stench = true;
+            //map[x, y].Stench = true;
             if(x+1<4 && x + 1 >= 0) {
                 map[x + 1, y].Stench = true;
             }

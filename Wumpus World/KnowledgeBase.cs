@@ -79,13 +79,23 @@ namespace Wumpus_World
 			//Console.WriteLine(line);
 			return PlQuery.PlCall(line);
 		}
-        public void tell(bool breeze,bool stench, bool glitter,int x,int y) {
+
+		public bool iswumpus(int x, int y)
+		{
+			String line = "iswumpus([" + x + "," + y + "])";
+			//Console.WriteLine(line);
+			return PlQuery.PlCall(line);
+		}
+
+		public void tell(bool breeze,bool stench, bool glitter,int x,int y) {
 			
 			String line= "sensebreeze(a" + breeze + ",["+x+","+y+"])";
 			//Console.WriteLine(line);
 			PlQuery.PlCall(line);
-			
 
+			line = "sensestench(a" + stench + ",[" + x + "," + y + "])";
+			//Console.WriteLine(line);
+			PlQuery.PlCall(line);
 
 		}
 
