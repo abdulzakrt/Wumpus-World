@@ -59,7 +59,7 @@ namespace Wumpus_World
                 map[x, y - 1].Stench = true;
             }
             //Adding 3 pits
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < 0; i++)
             {
                 x = r.Next(0, 4);
                 y = r.Next(0, 4);

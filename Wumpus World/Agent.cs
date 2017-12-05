@@ -220,13 +220,19 @@ namespace Wumpus_World
 		}
 
 		//This function makes the agent take a step in the world
-		public void Step()
+		public void Step() 
 		{
 			//Telling knowledgebase agent's percept
 			bool b = map[CurrentX, CurrentY].Breeze;
 			bool st = map[CurrentX, CurrentY].Stench;
+			bool gl = map[CurrentX, CurrentY].Glitter;			
 			kb.tell(b, st, false, CurrentX, CurrentY);
-
+			if (gl)
+			{
+				startpoint = new Point(CurrentX, CurrentY);
+				//MovetoLocation(0, 0);
+				throw new Exception("The agent collected the gold and won");
+			}
 			List<Point> safe = new List<Point>();
 			List<Point> notsafe = new List<Point>();
 			//Asking knowledgebase about safety of neighbouring cell's safety
@@ -296,8 +302,12 @@ namespace Wumpus_World
 					Console.WriteLine("Can't make any more moves");
 				}
 			}
-			//else pick random node to move to
+			//if the agent is on a Wumpus or Pit he dies
 			
+			if(world.map[CurrentX,CurrentY].Pit || world.map[CurrentX, CurrentY].Wumpus)
+			{
+				throw new Exception("The agent is dead");
+			}
 		}
 
 		private List<Point> Getpointneighbours(Point p)

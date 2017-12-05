@@ -10,23 +10,45 @@ namespace Wumpus_World
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-			Console.Write("Wumpus World\n");
-			World w = new World();
-			w.InitializeWorld();
-			Agent a = new Agent(w);
-			int x;
-			while (true)
-			{
-				w.PrintMap();
-				a.Step();
+		static void Main(string[] args)
+		{
+			int count = 0;
+			int lived = 0;
+			int died = 0;
+			while (count<100){ 
+				Console.Write("Wumpus World\n");
+				World w = new World();
+				w.InitializeWorld();
+				Agent a = new Agent(w);
+				bool agentdead = false;
 				
-				Console.ReadLine();
+				while (!agentdead)
+				{
+					//w.PrintMap();
+					try
+					{
+						a.Step();
+					}
+					catch (Exception ex)
+					{
+
+						//Console.WriteLine(ex.Message);
+						if (ex.Message.Equals("The agent collected the gold and won"))
+						{
+							lived++;
+						}
+						else { died++; }
+						agentdead = true;
+					}
+
+					//Console.ReadLine();
+				}
+
+				//stop prolog session
+				PlEngine.PlCleanup();
+				count++;
 			}
-			
-			//stop prolog session
-			PlEngine.PlCleanup();
+			Console.WriteLine("Died: " + died + " Lived: " + lived);
 		}
     }
 }
