@@ -228,6 +228,7 @@ namespace Wumpus_World
 			kb.tell(b, st, false, CurrentX, CurrentY);
 
 			List<Point> safe = new List<Point>();
+			List<Point> notsafe = new List<Point>();
 			//Asking knowledgebase about safety of neighbouring cell's safety
 			foreach (Point p in visited) {
 				//making neighbours for each visited node
@@ -240,6 +241,11 @@ namespace Wumpus_World
 						if(!safe.Contains(n))
 						safe.Add(n);
 					}
+					else
+					{
+						if (!notsafe.Contains(n))
+							notsafe.Add(n);
+					}
 				}
 			}
 			Console.WriteLine("Safe Nodes: ");
@@ -250,24 +256,45 @@ namespace Wumpus_World
 			Console.WriteLine();
 			//if there are safe nodes go to safe one
 			//Console.WriteLine(safe.Count);
-			bool newsafe = false;
-			if (safe.Count != 0)
+			List<Point> newsafe = new List<Point>();
+			foreach (Point s in safe)
 			{
-				foreach (Point s in safe) {
-					if(!visited.Contains(s)) {
+				if (!visited.Contains(s))
+				{
+					newsafe.Add(s);
+					
+				}
+			}
+			//if there are safe new nodes to visit go to that node
+			if (newsafe.Count !=0 )
+			{
+				Point nextpoint = newsafe.First();
+				Console.WriteLine("Moving to location " + nextpoint);
+				startpoint = new Point(CurrentX, CurrentY);
+				MovetoLocation(nextpoint.X, nextpoint.Y);
+				
 
-						Console.WriteLine("Moving to location " + s);
+			}
+			//if there are no new safe nodes to visit pick a random new node to go to
+			else
+			{
+				Console.WriteLine("No more safe nodes");
+				bool nomoremoves = true;
+				foreach(Point m in notsafe)
+				{
+					if (!visited.Contains(m))
+					{
+						Console.WriteLine("Moving to random node "+ m);
 						startpoint = new Point(CurrentX, CurrentY);
-						MovetoLocation(s.X, s.Y);
-						newsafe = true;
+						MovetoLocation(m.X, m.Y);
+						nomoremoves = false;
 						break;
 					}
 				}
-				
-			}
-			if(!newsafe)
-			{
-				Console.WriteLine("No more safe nodes");
+				if (nomoremoves)
+				{
+					Console.WriteLine("Can't make any more moves");
+				}
 			}
 			//else pick random node to move to
 			
