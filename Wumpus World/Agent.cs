@@ -18,6 +18,7 @@ namespace Wumpus_World
         private int CurrentY = 0;
 		private Random r = new Random();
 		private KnowledgeBase kb;
+		private Point startpoint = new Point(0, 0);
 		public Agent (World w)
 		{
 			world = w;
@@ -91,29 +92,33 @@ namespace Wumpus_World
 			//}
 			if(CurrentX == x && CurrentY == y)
 			{
+				Point visitedp = new Point(CurrentX, CurrentY);
+				if (!visited.Contains(visitedp))
+					visited.Add(new Point(CurrentX, CurrentY));
 				
+
 			}
 
 			else if(CurrentX == x && CurrentY == y + 1)
 			{
 				MoveAgentNorth();
-				//MovetoLocation(x, y - 1);
+				MovetoLocation(x, y);
 			}
 
 			else if (CurrentX == x && CurrentY == y - 1)
 			{
 				MoveAgentSouth();
-				//MovetoLocation(x, y + 1);
+				MovetoLocation(x, y);
 			}
 			else if (CurrentX == x-1 && CurrentY == y)
 			{
 				MoveAgentEast();
-				//MovetoLocation(x-1, y);
+				MovetoLocation(x, y);
 			}
 			else if (CurrentX == x + 1 && CurrentY == y)
 			{
 				MoveAgentWest();
-				//MovetoLocation(x + 1, y);
+				MovetoLocation(x, y);
 			}
 			//else move to a neighboring visited node
 			else
@@ -128,27 +133,27 @@ namespace Wumpus_World
 					}
 				}
 				//pick the nearest node to move back to the first one
-				Point goalpoint = new Point(CurrentX, CurrentY);
+				
 				Point nextpoint = new Point(0,0) ;
 				double minpathdistance = 10000;
 				foreach(Point v in visitedneighbours)
 				{
-					if (minpathdistance > GetpointDistance(v.X,goalpoint.X,v.Y,goalpoint.Y))
+					if (minpathdistance > GetpointDistance(v.X,v.Y,startpoint.X,startpoint.Y) )//&& !traversedPoints.Contains(v)
 					{
-						minpathdistance = GetpointDistance(v.X, goalpoint.X, v.Y, goalpoint.Y);
+						minpathdistance = GetpointDistance(v.X, v.Y, startpoint.X, startpoint.Y);
+						//Console.WriteLine("min distance = " + minpathdistance + "min point : " + v);
 						nextpoint = v;
 					}
 				}
 
 				Console.WriteLine("next point is " + nextpoint);
+				//traversedPoints.Add(nextpoint);
 				MovetoLocation(nextpoint.X, nextpoint.Y);
+				MovetoLocation(x, y);
 				
 			}
 
-			Point visitedp = new Point(CurrentX, CurrentY);
-			if(!visited.Contains(visitedp))
-			visited.Add(new Point(CurrentX, CurrentY));
-
+			
 
 		}
 		private bool MoveAgentNorth()
@@ -243,6 +248,7 @@ namespace Wumpus_World
 					if(!visited.Contains(s)) { 
 						
 						Console.WriteLine("Moving to location" + s.X + s.Y);
+						startpoint = new Point(CurrentX, CurrentY);
 						MovetoLocation(s.X, s.Y);
 						break;
 					}
