@@ -156,7 +156,7 @@ namespace Wumpus_World
 				if(nextpoint.Equals(new Point(-1, -1)))
 				{
 					//Console.ReadLine();
-					Console.BackgroundColor = ConsoleColor.Blue;					
+					Console.BackgroundColor = ConsoleColor.Blue;
 					nextpoint = availablepoints.Pop();
 					Console.WriteLine("Backtracking to point " + nextpoint);
 				}
@@ -272,7 +272,7 @@ namespace Wumpus_World
 			Console.WriteLine("Safe Nodes: ");
 			foreach (Point l in safe)
 			{
-				Console.Write(l+ ", ");
+				//Console.Write(l+ ", ");
 			}
 			Console.WriteLine();
 			//if there are safe nodes go to safe one

@@ -15,16 +15,16 @@ namespace Wumpus_World
 			int count = 0;
 			int lived = 0;
 			int died = 0;
-			while (count<500){ 
+			while (count<50){ 
 				Console.Write("Wumpus World\n");
-				World w = new World(10,2,1);
+				World w = new World(10,5,4);
 				w.InitializeWorld();
 				Agent a = new Agent(w);
 				bool agentdead = false;
 				
 				while (!agentdead)
 				{
-					w.PrintMap();
+					//w.PrintMap();
 					try
 					{
 						a.Step();
