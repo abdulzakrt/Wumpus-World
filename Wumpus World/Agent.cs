@@ -19,6 +19,8 @@ namespace Wumpus_World
 		private Random r = new Random();
 		private KnowledgeBase kb;
 		private Point startpoint = new Point(0, 0);
+		private List<Point> traversedPoints = new List<Point>();
+		Stack<Point> availablepoints = new Stack<Point>();
 		public Agent (World w)
 		{
 			
@@ -96,8 +98,8 @@ namespace Wumpus_World
 				Point visitedp = new Point(CurrentX, CurrentY);
 				if (!visited.Contains(visitedp))
 					visited.Add(new Point(CurrentX, CurrentY));
-				
-
+				traversedPoints.Clear();
+				availablepoints.Clear();
 			}
 
 			else if(CurrentX == x && CurrentY == y + 1)
@@ -135,20 +137,32 @@ namespace Wumpus_World
 				}
 				//pick the nearest node to move back to the first one
 				
-				Point nextpoint = new Point(0,0) ;
+				Point nextpoint = new Point(-1,-1) ;
 				double minpathdistance = 10000;
 				foreach(Point v in visitedneighbours)
 				{
-					if (minpathdistance > GetpointDistance(v.X,v.Y,startpoint.X,startpoint.Y) )//&& !traversedPoints.Contains(v)
+					
+					double h = GetpointDistance(v.X, v.Y, startpoint.X, startpoint.Y) + GetpointDistance(v.X, v.Y, x, y);
+					if (minpathdistance > h  && !traversedPoints.Contains(v))
 					{
-						minpathdistance = GetpointDistance(v.X, v.Y, startpoint.X, startpoint.Y);
-						//Console.WriteLine("min distance = " + minpathdistance + "min point : " + v);
+						minpathdistance = h;						
 						nextpoint = v;
 					}
+					else if(!traversedPoints.Contains(v))
+					{
+						availablepoints.Push(v);
+					}
 				}
-
+				if(nextpoint.Equals(new Point(-1, -1)))
+				{
+					//Console.ReadLine();
+					Console.BackgroundColor = ConsoleColor.Blue;					
+					nextpoint = availablepoints.Pop();
+					Console.WriteLine("Backtracking to point " + nextpoint);
+				}
+				Console.WriteLine("min distance = " + minpathdistance + "min point : " + nextpoint);
 				//Console.WriteLine("next point is " + nextpoint);
-				//traversedPoints.Add(nextpoint);
+				traversedPoints.Add(nextpoint);
 				MovetoLocation(nextpoint.X, nextpoint.Y);
 				MovetoLocation(x, y);
 				
@@ -157,6 +171,7 @@ namespace Wumpus_World
 			
 
 		}
+
 		private bool MoveAgentNorth()
 		{
 			if (CurrentY1 - 1 >= 0)
@@ -175,7 +190,7 @@ namespace Wumpus_World
 		}
 		private bool MoveAgentSouth()
 		{
-			if (CurrentY1 + 1 <= 3)
+			if (CurrentY1 + 1 < world.Size)
 			{
 
 				world.map[CurrentX1, CurrentY1].RemoveAgent();
@@ -190,7 +205,7 @@ namespace Wumpus_World
 		}
 		private bool MoveAgentEast()
 		{
-			if (CurrentX1 + 1 <= 3)
+			if (CurrentX1 + 1 < world.Size)
 			{
 
 				world.map[CurrentX1, CurrentY1].RemoveAgent();
@@ -230,7 +245,7 @@ namespace Wumpus_World
 			if (gl)
 			{
 				startpoint = new Point(CurrentX, CurrentY);
-				//MovetoLocation(0, 0);
+				MovetoLocation(0, 0);
 				throw new Exception("The agent collected the gold and won");
 			}
 			List<Point> safe = new List<Point>();

@@ -12,13 +12,17 @@ namespace Wumpus_World
 
         public MapSquare[,] map ;
 		private int size;
+		private int numofpits;
+		private int numofwumpus;
         Random r = new Random();
-        public World() {
-            map = new MapSquare[4, 4];
-			size = 4;
-            for (int i = 0; i < 4; i++)
+        public World(int siZe, int pits,int wumpus) {
+			size = siZe;
+            map = new MapSquare[size, size];
+			numofpits = pits;
+			numofwumpus = wumpus;
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < size; j++)
                 {
                     map[i, j] = new MapSquare();
                 }
@@ -34,65 +38,70 @@ namespace Wumpus_World
             //Random Number Generator
             
             int x=0,y=0;
-            //Adding a wumpus
-            x = r.Next(1, 4);
-            y = r.Next(1, 4);
-            while (x == 0 && y == 0) {
-                x = r.Next(1, 4);
-                y = r.Next(1, 4);
-            }
-            map[x,y].Wumpus = true;
-            //map[x, y].Stench = true;
-            if(x+1<4 && x + 1 >= 0) {
-                map[x + 1, y].Stench = true;
-            }
-            if (x - 1 < 4 && x - 1 >= 0)
+			//Adding a wumpus
+			for (int m = 0; m < numofwumpus; m++)
+			{
+				x = r.Next(1, size);
+				y = r.Next(1, size);
+				while (x == 0 && y == 0)
+				{
+					x = r.Next(1, size);
+					y = r.Next(1, size);
+				}
+				map[x, y].Wumpus = true;
+				//map[x, y].Stench = true;
+				if (x + 1 < size && x + 1 >= 0)
+				{
+					map[x + 1, y].Stench = true;
+				}
+				if (x - 1 < size && x - 1 >= 0)
+				{
+					map[x - 1, y].Stench = true;
+				}
+				if (y + 1 < size && y + 1 >= 0)
+				{
+					map[x, y + 1].Stench = true;
+				}
+				if (y - 1 < size && y - 1 >= 0)
+				{
+					map[x, y - 1].Stench = true;
+				}
+			}
+            //Adding numofpits pits
+            for(int i = 0; i < numofpits; i++)
             {
-                map[x - 1, y].Stench = true;
-            }
-            if (y + 1 < 4 &&  y + 1 >= 0)
-            {
-                map[x, y + 1].Stench = true;
-            }
-            if (y - 1 < 4 && y - 1 >= 0)
-            {
-                map[x, y - 1].Stench = true;
-            }
-            //Adding 3 pits
-            for(int i = 0; i < 0; i++)
-            {
-                x = r.Next(0, 4);
-                y = r.Next(0, 4);
+                x = r.Next(0, size);
+                y = r.Next(0, size);
                 while (map[x,y].Pit || map[x, y].Wumpus || (x==0 && y==0)) {
-                    x = r.Next(0, 4);
-                    y = r.Next(0, 4);
+                    x = r.Next(0, size);
+                    y = r.Next(0, size);
                 }
                 map[x, y].Pit = true;
                 map[x, y].Breeze = true;
-                if (x + 1 < 4 && x + 1 >= 0)
+                if (x + 1 < size && x + 1 >= 0)
                 {
                     map[x + 1, y].Breeze = true;
                 }
-                if (x - 1 < 4 && x - 1 >= 0)
+                if (x - 1 < size && x - 1 >= 0)
                 {
                     map[x - 1, y].Breeze = true;
                 }
-                if (y + 1 < 4 && y + 1 >= 0)
+                if (y + 1 < size && y + 1 >= 0)
                 {
                     map[x, y + 1].Breeze = true;
                 }
-                if (y - 1 < 4 && y - 1 >= 0)
+                if (y - 1 < size && y - 1 >= 0)
                 {
                     map[x, y - 1].Breeze = true;
                 }
             }
             //Adding Gold
-            x = r.Next(0, 4);
-            y = r.Next(0, 4);
+            x = r.Next(0, size);
+            y = r.Next(0, size);
             while (map[x, y].Pit || map[x, y].Wumpus || (x == 0 && y == 0))
             {
-                x = r.Next(0, 4);
-                y = r.Next(0, 4);
+                x = r.Next(0, size);
+                y = r.Next(0, size);
             }
             map[x, y].Glitter = true;
            
@@ -104,9 +113,9 @@ namespace Wumpus_World
 			Console.WriteLine();
 			Console.WriteLine("______________________________________________");
 			Console.WriteLine("   0         1         2         3");
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < size; i++) {
                 Console.Write(i+"  ");
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < size; j++)
                 {
                     Console.Write(map[j,i].ReturnSquare());
                     

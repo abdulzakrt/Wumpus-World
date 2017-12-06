@@ -15,16 +15,16 @@ namespace Wumpus_World
 			int count = 0;
 			int lived = 0;
 			int died = 0;
-			while (count<100){ 
+			while (count<500){ 
 				Console.Write("Wumpus World\n");
-				World w = new World();
+				World w = new World(10,2,1);
 				w.InitializeWorld();
 				Agent a = new Agent(w);
 				bool agentdead = false;
 				
 				while (!agentdead)
 				{
-					//w.PrintMap();
+					w.PrintMap();
 					try
 					{
 						a.Step();
@@ -32,14 +32,19 @@ namespace Wumpus_World
 					catch (Exception ex)
 					{
 
-						//Console.WriteLine(ex.Message);
+						
 						if (ex.Message.Equals("The agent collected the gold and won"))
 						{
 							lived++;
 						}
-						else { died++; }
+						else { died++;
+							
+						}
 						agentdead = true;
-					}
+						w.PrintMap();
+
+					Console.WriteLine(ex.Message);
+				}
 
 					//Console.ReadLine();
 				}
