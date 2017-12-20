@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Wumpus_World.Agent">
+    <Position X="3.5" Y="0.5" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AABAGFAAAAAAIA4AAAAIAoAICABAABCAIIARAAAAAAA=</HashCode>
+      <FileName>Agent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="world" />
+      <Field Name="kb" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Wumpus_World.KnowledgeBase">
+    <Position X="14.25" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAIAAAAAAAAAEAA=</HashCode>
+      <FileName>KnowledgeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wumpus_World.MapSquare">
+    <Position X="14" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AARAAoAAwACAAAIoAAAGKAAABAAACAEAAAgAACAEAAA=</HashCode>
+      <FileName>MapSquare.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wumpus_World.Program">
+    <Position X="10" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wumpus_World.World">
+    <Position X="10.25" Y="3.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAEAAAEEAAgAAAAIAAAAACAAAAAAAAQAIBAAAEAAA=</HashCode>
+      <FileName>World.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="map" />
+      <Field Name="Placements" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Wumpus_World.WorldPlacements">
+    <Position X="16.5" Y="4" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAQAAIAAAAAAABIAAAAQAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>WorldPlacements.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Direction" Collapsed="true">
+    <Position X="3.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAAQ=</HashCode>
+      <FileName>Agent.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

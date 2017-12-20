@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Drawing;
 
 namespace Wumpus_World
 {
@@ -15,16 +15,32 @@ namespace Wumpus_World
 			int count = 0;
 			int lived = 0;
 			int died = 0;
-			while (count<50){ 
+			while (count<1){ 
 				Console.Write("Wumpus World\n");
-				World w = new World(10,5,4);
-				w.InitializeWorld();
+
+				//Random World
+				World w = new World(4, 2, 1);
+				w.InitializeRandomWorld();
+
+				//World in Book
+				//World w = new World(4,2,1);
+				//List<Point> pits = new List<Point>();
+				//pits.Add(new Point(2, 0));
+				//pits.Add(new Point(2, 2));
+				//List<Point> wumpuses = new List<Point>();
+				//wumpuses.Add(new Point(0, 2));
+				//Point gold = new Point(1, 2);
+				//WorldPlacements places = new WorldPlacements(wumpuses,pits,gold);
+				//w.InitializeSpecificWorld(places);
+
+
+				//w.InitializeRandomWorld();
 				Agent a = new Agent(w);
 				bool agentdead = false;
 				
 				while (!agentdead)
 				{
-					//w.PrintMap();
+					w.PrintMap();
 					try
 					{
 						a.Step();
@@ -36,17 +52,19 @@ namespace Wumpus_World
 						if (ex.Message.Equals("The agent collected the gold and won"))
 						{
 							lived++;
+							a.Performance += 1000;
 						}
 						else { died++;
-							
+							a.Performance -= 1000;
 						}
 						agentdead = true;
 						w.PrintMap();
 
 					Console.WriteLine(ex.Message);
-				}
+					Console.WriteLine("Performance: "+a.Performance);
+					}
 
-					//Console.ReadLine();
+					Console.ReadLine();
 				}
 
 				//stop prolog session

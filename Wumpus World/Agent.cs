@@ -21,6 +21,7 @@ namespace Wumpus_World
 		private Point startpoint = new Point(0, 0);
 		private List<Point> traversedPoints = new List<Point>();
 		Stack<Point> availablepoints = new Stack<Point>();
+		int performance = 0;
 		public Agent (World w)
 		{
 			
@@ -68,6 +69,9 @@ namespace Wumpus_World
                 CurrentY = value;
             }
         }
+
+		public int Performance { get => performance; set => performance = value; }
+
 		private static double GetpointDistance(double x1, double y1, double x2, double y2)
 		{
 			return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
@@ -160,7 +164,7 @@ namespace Wumpus_World
 					nextpoint = availablepoints.Pop();
 					Console.WriteLine("Backtracking to point " + nextpoint);
 				}
-				Console.WriteLine("min distance = " + minpathdistance + "min point : " + nextpoint);
+				//Console.WriteLine("min distance = " + minpathdistance + "min point : " + nextpoint);
 				//Console.WriteLine("next point is " + nextpoint);
 				traversedPoints.Add(nextpoint);
 				MovetoLocation(nextpoint.X, nextpoint.Y);
@@ -180,7 +184,7 @@ namespace Wumpus_World
 				world.map[CurrentX1, CurrentY1].RemoveAgent();
 				CurrentY1--;
 				world.map[CurrentX1, CurrentY1].PutAgent(this);
-
+				performance--;
 				return true;
 			}
 			else
@@ -196,6 +200,7 @@ namespace Wumpus_World
 				world.map[CurrentX1, CurrentY1].RemoveAgent();
 				CurrentY1++;
 				world.map[CurrentX1, CurrentY1].PutAgent(this);
+				performance--;
 				return true;
 			}
 			else
@@ -211,6 +216,7 @@ namespace Wumpus_World
 				world.map[CurrentX1, CurrentY1].RemoveAgent();
 				CurrentX1++;
 				world.map[CurrentX1, CurrentY1].PutAgent(this);
+				performance--;
 				return true;
 			}
 			else
@@ -226,6 +232,7 @@ namespace Wumpus_World
 				world.map[CurrentX1, CurrentY1].RemoveAgent();
 				CurrentX1--;
 				world.map[CurrentX1, CurrentY1].PutAgent(this);
+				performance--;
 				return true;
 			}
 			else
@@ -250,16 +257,28 @@ namespace Wumpus_World
 			}
 			List<Point> safe = new List<Point>();
 			List<Point> notsafe = new List<Point>();
+
+			List<Point> pitnodes = new List<Point>();
+			List<Point> wumpusnodes = new List<Point>();
+
 			//Asking knowledgebase about safety of neighbouring cell's safety
 			foreach (Point p in visited) {
 				//making neighbours for each visited node
 				List<Point> neighbours = Getpointneighbours(p);	
 				foreach (Point n in neighbours)
 				{
-					//Console.WriteLine("point ( "+n.X+","+n.Y+") is "+kb.ispit(n.X, n.Y));
+					if(kb.ispit(n.X, n.Y) && !visited.Contains(n))
+					{
+						pitnodes.Add(n);
+					}
+					if (kb.iswumpus(n.X, n.Y) && !visited.Contains(n))
+					{
+						wumpusnodes.Add(n);
+					}
 					if (!kb.ispit(n.X, n.Y) && !kb.iswumpus(n.X,n.Y))
 					{
-						if(!safe.Contains(n))
+						//Console.WriteLine("point ( "+n.X+","+n.Y+") is "+kb.ispit(n.X, n.Y));
+						if (!safe.Contains(n))
 						safe.Add(n);
 					}
 					else
@@ -269,11 +288,8 @@ namespace Wumpus_World
 					}
 				}
 			}
-			Console.WriteLine("Safe Nodes: ");
-			foreach (Point l in safe)
-			{
-				//Console.Write(l+ ", ");
-			}
+			
+			
 			Console.WriteLine();
 			//if there are safe nodes go to safe one
 			//Console.WriteLine(safe.Count);
@@ -286,6 +302,25 @@ namespace Wumpus_World
 					
 				}
 			}
+			Console.WriteLine("Not Visited Safe Nodes: ");
+			foreach (Point l in newsafe)
+			{
+				Console.Write(l + ", ");
+			}
+			Console.WriteLine();
+			Console.WriteLine("These nodes might have pits: ");
+			foreach (Point l in pitnodes)
+			{
+				Console.Write(l + ", ");
+			}
+			Console.WriteLine();
+			Console.WriteLine("These nodes might have wumpuses: ");
+			foreach (Point l in wumpusnodes)
+			{
+				Console.Write(l + ", ");
+			}
+
+			Console.WriteLine();
 			//if there are safe new nodes to visit go to that node
 			if (newsafe.Count !=0 )
 			{

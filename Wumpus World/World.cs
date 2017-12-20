@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,11 @@ namespace Wumpus_World
         public MapSquare[,] map ;
 		private int size;
 		private int numofpits;
-		private int numofwumpus;
-        Random r = new Random();
-        public World(int siZe, int pits,int wumpus) {
+		private int numofwumpus;		
+		Random r = new Random();
+		private WorldPlacements Placements;
+
+		public World(int siZe, int pits,int wumpus) {
 			size = siZe;
             map = new MapSquare[size, size];
 			numofpits = pits;
@@ -30,10 +33,24 @@ namespace Wumpus_World
             }
             
         }
+		
 
 		public int Size { get => size; set => size = value; }
 
-		public void InitializeWorld()
+		public void InitializeSpecificWorld(WorldPlacements p)
+		{
+			foreach (Point i in p.Wumpuses)
+			{
+				Placewumpus(i.X, i.Y);
+			}
+			foreach (Point j in p.Pits)
+			{
+				Placepit(j.X, j.Y);
+			}
+			map[p.Gold.X, p.Gold.Y].Glitter = true;
+
+		}
+		public void InitializeRandomWorld()
         {
             //Random Number Generator
             
@@ -48,24 +65,7 @@ namespace Wumpus_World
 					x = r.Next(1, size);
 					y = r.Next(1, size);
 				}
-				map[x, y].Wumpus = true;
-				//map[x, y].Stench = true;
-				if (x + 1 < size && x + 1 >= 0)
-				{
-					map[x + 1, y].Stench = true;
-				}
-				if (x - 1 < size && x - 1 >= 0)
-				{
-					map[x - 1, y].Stench = true;
-				}
-				if (y + 1 < size && y + 1 >= 0)
-				{
-					map[x, y + 1].Stench = true;
-				}
-				if (y - 1 < size && y - 1 >= 0)
-				{
-					map[x, y - 1].Stench = true;
-				}
+				Placewumpus(x, y);
 			}
             //Adding numofpits pits
             for(int i = 0; i < numofpits; i++)
@@ -76,24 +76,8 @@ namespace Wumpus_World
                     x = r.Next(0, size);
                     y = r.Next(0, size);
                 }
-                map[x, y].Pit = true;
-                map[x, y].Breeze = true;
-                if (x + 1 < size && x + 1 >= 0)
-                {
-                    map[x + 1, y].Breeze = true;
-                }
-                if (x - 1 < size && x - 1 >= 0)
-                {
-                    map[x - 1, y].Breeze = true;
-                }
-                if (y + 1 < size && y + 1 >= 0)
-                {
-                    map[x, y + 1].Breeze = true;
-                }
-                if (y - 1 < size && y - 1 >= 0)
-                {
-                    map[x, y - 1].Breeze = true;
-                }
+				Placepit(x, y);
+                
             }
             //Adding Gold
             x = r.Next(0, size);
@@ -108,8 +92,49 @@ namespace Wumpus_World
             
 
         }
-
-        public void PrintMap() {
+		private void Placewumpus(int x,int y)
+		{
+			map[x, y].Wumpus = true;
+			//map[x, y].Stench = true;
+			if (x + 1 < size && x + 1 >= 0)
+			{
+				map[x + 1, y].Stench = true;
+			}
+			if (x - 1 < size && x - 1 >= 0)
+			{
+				map[x - 1, y].Stench = true;
+			}
+			if (y + 1 < size && y + 1 >= 0)
+			{
+				map[x, y + 1].Stench = true;
+			}
+			if (y - 1 < size && y - 1 >= 0)
+			{
+				map[x, y - 1].Stench = true;
+			}
+		}
+		private void Placepit(int x, int y)
+		{
+			map[x, y].Pit = true;
+			map[x, y].Breeze = true;
+			if (x + 1 < size && x + 1 >= 0)
+			{
+				map[x + 1, y].Breeze = true;
+			}
+			if (x - 1 < size && x - 1 >= 0)
+			{
+				map[x - 1, y].Breeze = true;
+			}
+			if (y + 1 < size && y + 1 >= 0)
+			{
+				map[x, y + 1].Breeze = true;
+			}
+			if (y - 1 < size && y - 1 >= 0)
+			{
+				map[x, y - 1].Breeze = true;
+			}
+		}
+		public void PrintMap() {
 			Console.WriteLine();
 			Console.WriteLine("______________________________________________");
 			Console.WriteLine("   0         1         2         3");
